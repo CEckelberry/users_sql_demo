@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}User List{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h1 class="display-4">Users</h1>
+            <ul>
+                {% for user in users %}
+                <a class="list-group-item list-group-item-action" href="/users/{{user.id}}">{{user.first_name}} {{user.last_name}}</a>  
+                {% endfor %}
+            </ul>
+            <form action="/users/new">
+                <button class="btn btn-default" type="submit">Add User</button>
+            </form>
+        </div>
+        <div class="col-sm"></div>
+    </div>
+</div>
+{% endblock %}

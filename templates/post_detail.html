@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Post Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-3">
+        <div class=".col-md-4">
+            <div class="float_details ml-3">
+                <h1 class="display-4">{{ post.title }}</h1>
+                <p>{{post.content}}</p>   
+                <div class="d-inline-flex">
+                    <form action="/posts">
+                        <button class="btn btn-outline-info">Cancel</button>
+                    </form>    
+                    <form action="/posts/{{post.id}}/edit">
+                        <button class="btn btn-info">Edit</button>
+                    </form>
+                    <form action="/posts/{{post.id}}/delete" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div> 
+            </div>
+        </div>
+        <div class=".col-md-4"></div>
+        <div class=".col-md-4"></div>
+    </div>
+</div>
+{% endblock %}

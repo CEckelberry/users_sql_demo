@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Post List{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h1 class="display-4">Posts</h1>
+            <ul>
+                {% for post in posts %}
+                <a class="list-group-item list-group-item-action" href="/posts/{{post.id}}">{{post.title}}</a>  
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-sm"></div>
+    </div>
+</div>
+{% endblock %}

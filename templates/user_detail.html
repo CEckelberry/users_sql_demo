@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}User Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-3">
+        <div class=".col-md-4">
+            <img src="{{ user.image_url }}" alt="" height="200px" width="200px">
+            <div class="float_details ml-3">
+                <h1 class="display-4">{{ user.first_name }} {{ user.last_name }}</h1>   
+                <div class="d-inline-flex">    
+                    <form action="/users/{{user.id}}/edit">
+                        <button class="btn btn-info">Edit</button>
+                    </form>
+                    <form action="/users/{{user.id}}/delete" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div> 
+                <h1 class="display-4 mt-5">Posts:</h1>
+                {% for post in posts %}
+                <a class="list-group-item list-group-item-action" href="/posts/{{post.id}}">{{post.title}}</a>
+                {% endfor %}
+                <form action="/users/{{user.id}}/posts/new">
+                    <button class="btn btn-blue-grey">Add Post</button>
+                </form>
+            </div>
+        </div>
+        <div class=".col-md-4"></div>
+        <div class=".col-md-4"></div>
+    </div>
+</div>
+{% endblock %}
