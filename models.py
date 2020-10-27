@@ -43,3 +43,28 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True)
 
     users = db.relationship("User", backref="posts")
+
+    # direct navigation to tags through PostTag and back
+    tags = db.relationship("Tag", secondary="post_tags", backref="posts")
+
+
+class Tag(db.Model):
+    __tablename__ = "tags"
+
+    def __repr__(self):
+        t = self
+        return f"<tag id={t.id} tag name={t.name}>"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    name = db.Column(db.Text, nullable=False, unique=True)
+
+
+class PostTag(db.Model):
+    """mapping of a post to tags"""
+
+    __tablename__ = "post_tags"
+
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), primary_key=True)
+
+    tag_id = db.Column(db.Integer, db.ForeignKey("tags.id"), primary_key=True)

@@ -10,7 +10,7 @@ db.create_all()
 # If table isn't empty, empty it
 User.query.delete()
 
-# Add Users
+# Users
 john = User(
     first_name="John",
     last_name="Smith",
@@ -27,7 +27,7 @@ captain = User(
     image_url="https://cdn.shopify.com/s/files/1/1343/0857/products/POP0054AB1_604d0ca3-5346-4720-89d1-859d2d1bfd79.jpg?v=1571610468",
 )
 
-
+# posts
 political = Post(
     title="Yay Biden Harris!",
     content="I can't believe we are going to have the first female VP this year! What a historic event to be apart of in shit 2020",
@@ -61,13 +61,21 @@ angry = Post(
     user_id=3,
 )
 
+# tags
+hilarious = Tag(name="hilarious")
+scary = Tag(name="scary")
+bad = Tag(name="bad")
+great = Tag(name="great")
+wholesome = Tag(name="great")
+mean = Tag(name="mean")
+
 
 # Add new objects to session, so they'll persist
 db.session.add(john)
 db.session.add(carol)
 db.session.add(captain)
 
-# Commit--otherwise, this never gets saved!
+# Commit- for users
 db.session.commit()
 # Add new Posts after users
 db.session.add(political)
@@ -76,5 +84,14 @@ db.session.add(funny)
 db.session.add(funny2)
 db.session.add(sad)
 db.session.add(angry)
-# Commit--otherwise, posts never gets saved!
+# post commit
+db.session.commit()
+# adding in tags
+db.session.add(hilarious)
+db.session.add(scary)
+db.session.add(bad)
+db.session.add(great)
+db.session.add(wholesome)
+db.session.add(mean)
+# Tag commit
 db.session.commit()

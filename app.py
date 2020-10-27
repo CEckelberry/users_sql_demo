@@ -162,3 +162,9 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     return redirect("/posts")
+
+
+@app.route("/tags", methods=["GET"])
+def list_tags():
+    tags = Tag.query.all()
+    return render_template("tags.html", tags=tags)
