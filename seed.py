@@ -1,6 +1,6 @@
 """Seed file to make sample data for pets db."""
 
-from models import User, Post, db
+from models import User, Post, Tag, PostTag, db
 from app import app
 
 # Create all tables
@@ -9,6 +9,8 @@ db.create_all()
 
 # If table isn't empty, empty it
 User.query.delete()
+Post.query.delete()
+Tag.query.delete()
 
 # Users
 john = User(
@@ -62,36 +64,43 @@ angry = Post(
 )
 
 # tags
-hilarious = Tag(name="hilarious")
-scary = Tag(name="scary")
-bad = Tag(name="bad")
-great = Tag(name="great")
-wholesome = Tag(name="great")
-mean = Tag(name="mean")
+hilarious = Tag(name="hilarious", posts=[PostTag(post_id=1, tag_id=1)])
+scary = Tag(name="scary", posts=[PostTag(post_id=2, tag_id=2)])
+bad = Tag(name="bad", posts=[PostTag(post_id=3, tag_id=3)])
+great = Tag(name="great", posts=[PostTag(post_id=4, tag_id=4)])
+wholesome = Tag(name="wholesome", posts=[PostTag(post_id=5, tag_id=5)])
+mean = Tag(name="mean", posts=[PostTag(post_id=6, tag_id=6)])
 
 
 # Add new objects to session, so they'll persist
-db.session.add(john)
-db.session.add(carol)
-db.session.add(captain)
+# db.session.add(john)
+# db.session.add(carol)
+# db.session.add(captain)
+
+db.session.add_all([john, carol, captain])
 
 # Commit- for users
 db.session.commit()
 # Add new Posts after users
-db.session.add(political)
-db.session.add(political2)
-db.session.add(funny)
-db.session.add(funny2)
-db.session.add(sad)
-db.session.add(angry)
+# db.session.add(political)
+# db.session.add(political2)
+# db.session.add(funny)
+# db.session.add(funny2)
+# db.session.add(sad)
+# db.session.add(angry)
+
+db.session.add_all([political, political2, funny, funny2, sad, angry])
+
 # post commit
 db.session.commit()
 # adding in tags
-db.session.add(hilarious)
-db.session.add(scary)
-db.session.add(bad)
-db.session.add(great)
-db.session.add(wholesome)
-db.session.add(mean)
+# db.session.add(hilarious)
+# db.session.add(scary)
+# db.session.add(bad)
+# db.session.add(great)
+# db.session.add(wholesome)
+# db.session.add(mean)
+
+db.session.add_all([hilarious, scary, bad, great, wholesome, mean])
 # Tag commit
 db.session.commit()

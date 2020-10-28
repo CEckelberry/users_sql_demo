@@ -32,7 +32,7 @@ class Post(db.Model):
         p = self
         return f"<post id={p.id} title={p.title} content={p.content} created_at={p.created_at} user_id={p.user_id}>"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
 
     title = db.Column(db.Text, nullable=False)
 
@@ -40,12 +40,14 @@ class Post(db.Model):
 
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     users = db.relationship("User", backref="posts")
 
     # direct navigation to tags through PostTag and back
-    tags = db.relationship("Tag", secondary="post_tags", backref="posts")
+    # tags = db.relationship("Tag", secondary="post_tags", backref="posts")
+
+    # tag_id = db.Column(db.Integer, db.ForeignKey("tags.id"), primary_key=True)
 
 
 class Tag(db.Model):
@@ -58,6 +60,9 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     name = db.Column(db.Text, nullable=False, unique=True)
+
+    # direct navigation to posts through PostTag and back
+    posts = db.relationship("PostTag", backref="tag")
 
 
 class PostTag(db.Model):
