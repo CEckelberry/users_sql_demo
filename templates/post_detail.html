@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
     <div class="row mt-3">
-        <div class=".col-md-4">
+        <div class="col-4">
             <div class="float_details ml-3">
                 <h1 class="display-4">{{ post.title }}</h1>
                 <p>{{post.content}}</p>   
@@ -20,10 +20,17 @@
                         <button class="btn btn-danger">Delete</button>
                     </form>
                 </div> 
+                <br> 
+                <br>
+                <h2 class="mt-2 d-inline align-middle">Tags:</h2>
+                {% for tag in tags %}
+                    <a href="/tags/{{tag.id}}"><span class="badge badge-pill badge-info d-inline align-baseline">{{tag.name}}</span></a>
+                {% endfor %}
             </div>
+
         </div>
-        <div class=".col-md-4"></div>
-        <div class=".col-md-4"></div>
+        <div class="col-4"></div>
+        <div class="col-4"></div>
     </div>
 </div>
 {% endblock %}

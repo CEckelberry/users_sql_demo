@@ -12,14 +12,19 @@
                         <input name="title" placeholder="Enter a title" class="form-control" id="title">
                     <label for="content">Content</label>
                         <textarea name="content" id="content" class="md-textarea form-control" rows="3"></textarea>
-                    <div class="d-inline-flex">
+                        {% for tag in tags %}
+                        <div class="custom-control custom-checkbox d-block">
+                            <input type="checkbox" class="custom-control-input" name="tags" value={{tag.id}} id="{{tag.name}}">
+                            <label class="custom-control-label" for="{{tag.name}}">{{tag.name}}</label>
+                        </div>
+                        {% endfor %}
+                        <div class="d-inline-flex">
                         <form action="/users/{{user.id}}">
                             <button class="btn btn-outline-info" type="submit">Cancel</button>
                         </form>    
                         <button class="btn btn-success" type="submit">Add</button>
                     </div>
                 </form>
-
         </div>
         <div class="col-sm"></div>
     </div>

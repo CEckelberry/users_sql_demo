@@ -78,14 +78,17 @@ def show_post(post_id):
     """show details on a single post"""
 
     post = Post.query.filter_by(id=post_id).one()
-
-    return render_template("post_detail.html", post=post)
+    print(post.id)
+    print(post.tags)
+    tags = post.tags
+    return render_template("post_detail.html", post=post, tags=tags)
 
 
 @app.route("/users/<user_id>/posts/new", methods=["GET"])
 def add_post(user_id):
     user = User.query.get_or_404(user_id)
-    return render_template("add_post.html", user=user)
+    tags = Tag.query.all()
+    return render_template("add_post.html", user=user, tags=tags)
 
 
 @app.route("/users/<user_id>/posts/new", methods=["POST"])
@@ -99,18 +102,25 @@ def create_post(user_id):
     db.session.add(new_post)
     db.session.commit()
 
+    tag_ids = [int(num) for num in request.form.getlist("tags")]
+    new_post.tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+
+    db.session.commit()
+
     return redirect(f"/users/{user_id}")
 
 
 @app.route("/posts/<post_id>/edit", methods=["GET"])
 def edit_post(post_id):
     post = Post.query.filter_by(id=post_id).one()
-    return render_template("edit_post.html", post=post)
+    tags = Tag.query.all()
+    return render_template("edit_post.html", post=post, tags=tags)
 
 
 @app.route("/posts/<post_id>/edit", methods=["POST"])
 def edit_post_result(post_id):
     post = Post.query.filter_by(id=post_id).one()
+    tags = post.tags
 
     updated_title = request.form["title"]
     updated_content = request.form["content"]
@@ -118,7 +128,9 @@ def edit_post_result(post_id):
     post.title = updated_title
     post.content = updated_content
 
-    # db.session.merge(user)
+    tag_ids = [int(num) for num in request.form.getlist("tags")]
+    post.tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+
     db.session.commit()
 
     return redirect("/posts")
@@ -168,3 +180,56 @@ def delete_post(post_id):
 def list_tags():
     tags = Tag.query.all()
     return render_template("tag_list.html", tags=tags)
+
+
+@app.route("/tags/<tag_id>")
+def show_tag(tag_id):
+    """show details on a single post"""
+    tag = Tag.query.filter_by(id=tag_id).one()
+    post_ids = db.session.query(PostTag.post_id).filter_by(tag_id=tag_id).all()
+    print(post_ids)
+    posts = Post.query.filter(Post.id.in_(post_ids))
+    print(posts)
+    return render_template("tag_detail.html", tag=tag, posts=posts)
+
+
+@app.route("/tags/new", methods=["GET"])
+def add_tag():
+    return render_template("add_tag.html")
+
+
+@app.route("/tags/new", methods=["POST"])
+def create_tag():
+    tag_name = request.form["tag_name"]
+
+    new_tag = Tag(name=tag_name)
+    db.session.add(new_tag)
+    db.session.commit()
+
+    return redirect("/tags")
+
+
+@app.route("/tags/<tag_id>/edit", methods=["GET"])
+def edit_tag(tag_id):
+    tag = Tag.query.filter_by(id=tag_id).one()
+    return render_template("edit_tag.html", tag=tag)
+
+
+@app.route("/tags/<tag_id>/edit", methods=["POST"])
+def edit_tag_result(tag_id):
+    tag = Tag.query.filter_by(id=tag_id).one()
+
+    updated_tag_name = request.form["tag_name"]
+
+    tag.name = updated_tag_name
+    db.session.commit()
+
+    return redirect("/tags")
+
+
+@app.route("/tags/<tag_id>/delete", methods=["POST"])
+def delete_tag(tag_id):
+    tag = Tag.query.get_or_404(tag_id)
+    db.session.delete(tag)
+    db.session.commit()
+    return redirect("/tags")

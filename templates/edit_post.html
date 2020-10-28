@@ -13,6 +13,13 @@
                 <input type="text" placeholder="{{post.title}}" name="title" id="title" class="form-control">
                 <label for="content">Content:</label>
                 <textarea placeholder="{{post.content}}" name="content" id="content" class="md-textarea form-control" rows="3"></textarea>
+                
+                {% for tag in tags %}
+                <div class="custom-control custom-checkbox d-block">
+                    <input type="checkbox" class="custom-control-input" name="tags" value={{tag.id}} id="{{tag.name}}">
+                    <label class="custom-control-label" for="{{tag.name}}">{{tag.name}}</label>
+                </div>
+                {% endfor %}
             </div>
             <div class=".col-md-4"></div>
             <div class=".col-md-4"></div>

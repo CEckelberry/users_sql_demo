@@ -44,10 +44,7 @@ class Post(db.Model):
 
     users = db.relationship("User", backref="posts")
 
-    # direct navigation to tags through PostTag and back
-    # tags = db.relationship("Tag", secondary="post_tags", backref="posts")
-
-    # tag_id = db.Column(db.Integer, db.ForeignKey("tags.id"), primary_key=True)
+    tags = db.relationship("Tag", secondary="post_tags", backref="posts")
 
 
 class Tag(db.Model):
@@ -62,7 +59,7 @@ class Tag(db.Model):
     name = db.Column(db.Text, nullable=False, unique=True)
 
     # direct navigation to posts through PostTag and back
-    posts = db.relationship("PostTag", backref="tag")
+    # posts = db.relationship("Post", secondary="post_tags", backref="tags")
 
 
 class PostTag(db.Model):
